@@ -1,0 +1,13 @@
+paramiko>=1.17.0
+pytest>=2.5.2
+pycrypto
+ecdsa
+pep8
+docutils
+jinja2
+pygments
+babel
+pytest-sftpserver
+pytest-pep8
+pylint
+livereload
