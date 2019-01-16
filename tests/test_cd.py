@@ -3,7 +3,7 @@
 import pytest
 
 from common import conn, VFS
-from sftpretty import cd, Connection
+from sftpretty import Connection
 
 
 def test_cd_none(sftpserver):

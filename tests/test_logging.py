@@ -4,7 +4,7 @@ import pytest
 
 from common import conn, VFS
 from pathlib import Path
-from sftpretyy import CnOpts, Connection
+from sftpretty import CnOpts, Connection
 
 
 def test_log_cnopt_user_file(sftpserver):

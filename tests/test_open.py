@@ -1,7 +1,7 @@
 '''test sftpretty.open'''
 
 from common import VFS, conn
-from sftpretty Connection
+from sftpretty import Connection
 
 
 def test_open_read(sftpserver):

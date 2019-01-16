@@ -251,7 +251,7 @@ class Connection(object):
             make the modification time(st_mtime) on the
             local file match the time on the remote. (st_atime can differ
             because stat'ing the localfile can/does update it's st_atime)
-        :param Exception execeptions: Exception(s) to check. May be a tuple of
+        :param Exception exceptions: Exception(s) to check. May be a tuple of
             exceptions to check. IOError or IOError(errno.ECOMM) or (IOError,)
             or (ValueError, IOError(errno.ECOMM))
         :param int tries: Times to try (not retry) before giving up.
@@ -310,7 +310,7 @@ class Connection(object):
             of files in a directory.
         :param bool preserve_mtime: *Default: False*
             preserve modification time on files
-        :param Exception execeptions: Exception(s) to check. May be a tuple of
+        :param Exception exceptions: Exception(s) to check. May be a tuple of
             exceptions to check. IOError or IOError(errno.ECOMM) or (IOError,)
             or (ValueError, IOError(errno.ECOMM))
         :param int tries: Times to try (not retry) before giving up.
@@ -398,7 +398,7 @@ class Connection(object):
             of files in a directory.
         :param bool preserve_mtime: *Default: False*
             preserve modification time on files
-        :param Exception execeptions: Exception(s) to check. May be a tuple of
+        :param Exception exceptions: Exception(s) to check. May be a tuple of
             exceptions to check. IOError or IOError(errno.ECOMM) or (IOError,)
             or (ValueError, IOError(errno.ECOMM))
         :param int tries: Times to try (not retry) before giving up.
@@ -437,7 +437,7 @@ class Connection(object):
         :param callable callback:
             optional callback function (form: ``func(int, int``)) that accepts
             the bytes transferred so far and the total bytes to be transferred.
-        :param Exception execeptions: Exception(s) to check. May be a tuple of
+        :param Exception exceptions: Exception(s) to check. May be a tuple of
             exceptions to check. IOError or IOError(errno.ECOMM) or (IOError,)
             or (ValueError, IOError(errno.ECOMM))
         :param int tries: Times to try (not retry) before giving up.
@@ -490,7 +490,7 @@ class Connection(object):
             make the modification time(st_mtime) on the
             remote file match the time on the local. (st_atime can differ
             because stat'ing the localfile can/does update it's st_atime)
-        :param Exception execeptions: Exception(s) to check. May be a tuple of
+        :param Exception exceptions: Exception(s) to check. May be a tuple of
             exceptions to check. IOError or IOError(errno.ECOMM) or (IOError,)
             or (ValueError, IOError(errno.ECOMM))
         :param int tries: Times to try (not retry) before giving up.
@@ -562,7 +562,7 @@ class Connection(object):
             make the modification time(st_mtime) on the
             remote file match the time on the local. (st_atime can differ
             because stat'ing the localfile can/does update it's st_atime)
-        :param Exception execeptions: Exception(s) to check. May be a tuple of
+        :param Exception exceptions: Exception(s) to check. May be a tuple of
             exceptions to check. IOError or IOError(errno.ECOMM) or (IOError,)
             or (ValueError, IOError(errno.ECOMM))
         :param int tries: Times to try (not retry) before giving up.
@@ -642,7 +642,7 @@ class Connection(object):
             make the modification time(st_mtime) on the
             remote file match the time on the local. (st_atime can differ
             because stat'ing the localfile can/does update it's st_atime)
-        :param Exception execeptions: Exception(s) to check. May be a tuple of
+        :param Exception exceptions: Exception(s) to check. May be a tuple of
             exceptions to check. IOError or IOError(errno.ECOMM) or (IOError,)
             or (ValueError, IOError(errno.ECOMM))
         :param int tries: Times to try (not retry) before giving up.
@@ -688,7 +688,7 @@ class Connection(object):
         :param bool confirm:
             whether to do a stat() on the file afterwards to confirm the file
             size
-        :param Exception execeptions: Exception(s) to check. May be a tuple of
+        :param Exception exceptions: Exception(s) to check. May be a tuple of
             exceptions to check. IOError or IOError(errno.ECOMM) or (IOError,)
             or (ValueError, IOError(errno.ECOMM))
         :param int tries: Times to try (not retry) before giving up.
@@ -735,7 +735,7 @@ class Connection(object):
         executed without regard to the remote :attr:`.pwd`.
 
         :param str command: the command to execute.
-        :param Exception execeptions: Exception(s) to check. May be a tuple of
+        :param Exception exceptions: Exception(s) to check. May be a tuple of
             exceptions to check. IOError or IOError(errno.ECOMM) or (IOError,)
             or (ValueError, IOError(errno.ECOMM))
         :param int tries: Times to try (not retry) before giving up.
@@ -875,12 +875,20 @@ class Connection(object):
         :returns: (bool) True, if remotepath exists, else False
 
         '''
-        self._sftp_connect()
+        self._sftp_channel()
+
+        channel = self._sftp.get_channel()
+        channel.set_name(Path(remotepath).name)
 
         try:
             self._sftp.stat(remotepath)
-        except IOError:
-            return False   
+        except IOError as err:
+            if err.errno == 2:
+                return False
+            else:
+                raise err
+        finally:
+            channel.close()
 
         return True
 
