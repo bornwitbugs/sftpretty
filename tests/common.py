@@ -4,6 +4,7 @@ import pytest
 
 from contextlib import contextmanager
 from os import close, getenv
+from pathlib import Path
 from sftpretty import CnOpts
 from tempfile import mkstemp
 
@@ -29,6 +30,17 @@ def conn(sftpsrv):
     return {'host': sftpsrv.host, 'port': sftpsrv.port, 'username': 'user',
             'password': 'pw', 'default_path': '/home/test', 'cnopts': cnopts}
 
+
+def rmdir(dir):
+    dir = Path(dir)
+    for item in dir.iterdir():
+        if item.is_dir():
+            rmdir(item)
+        else:
+            item.unlink()
+    dir.rmdir()
+
+
 @contextmanager
 def tempfile_containing(contents='', suffix=''):
     '''create a temporary file, with optional suffix and return the filename,
@@ -45,24 +57,25 @@ def tempfile_containing(contents='', suffix=''):
     finally:
         Path(temp_path).unlink()
 
+
 # filesystem served by pytest-sftpserver plugin
 VFS = {
     'home': {
         'test': {
             'pub': {
-                'make.txt': "content of make.txt",
                 'foo1': {
                     'foo1.txt': 'content of foo1.txt',
                     'image01.jpg': 'data for image01.jpg'
                 },
+                'make.txt': 'content of make.txt',
                 'foo2': {
-                    'foo2.txt': 'content of foo2.txt',
                     'bar1': {
                         'bar1.txt': 'contents bar1.txt'
-                    }
+                    },
+                    'foo2.txt': 'content of foo2.txt'
                 }
             },
-            'read.me': 'contents of read.me',
+            'read.me': 'contents of read.me'
         }
     }
 }
