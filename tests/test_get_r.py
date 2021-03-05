@@ -20,6 +20,7 @@ def test_get_r(sftpserver):
                       (['', 'pub', 'foo2'], ['bar1', 'foo2.txt']),
                       (['', 'pub', 'foo2', 'bar1'], ['bar1.txt', ]),
                      ]
+
             for pth, fls in checks:
                 assert sorted([path.name
                                for path in Path(localpath).joinpath(
@@ -42,6 +43,7 @@ def test_get_r_pwd(sftpserver):
                       (['', 'pub', 'foo2'], ['bar1', 'foo2.txt']),
                       (['', 'pub', 'foo2', 'bar1'], ['bar1.txt', ]),
                      ]
+
             for pth, fls in checks:
                 assert sorted([path.name
                                for path in Path(localpath).joinpath(
@@ -63,6 +65,7 @@ def test_get_r_pathed(sftpserver):
                       (['', ], ['bar1', ]),
                       (['', 'bar1'], ['bar1.txt', ]),
                      ]
+
             for pth, fls in checks:
                 assert sorted([path.name
                                for path in Path(localpath).joinpath(
@@ -84,6 +87,7 @@ def test_get_r_cdd(sftpserver):
                       (['', ], ['bar1', 'foo2.txt']),
                       (['bar1', ], ['bar1.txt', ]),
                      ]
+
             for pth, fls in checks:
                 assert sorted([path.name
                                for path in Path(localpath).joinpath(

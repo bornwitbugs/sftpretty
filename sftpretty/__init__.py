@@ -16,7 +16,7 @@ from stat import S_ISDIR, S_ISREG
 from tempfile import mkstemp
 from uuid import uuid4 as uuid
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 # pylint: disable = R0913,C0302
 
 basicConfig(level=INFO)
@@ -1107,6 +1107,7 @@ class Connection(object):
 
         '''
         try:
+            localdir = Path(localdir).expanduser().as_posix()
             for attribute in self.listdir_attr(remotedir):
                 if S_ISDIR(attribute.st_mode):
                     remote = Path(remotedir).joinpath(
