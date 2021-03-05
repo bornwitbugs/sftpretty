@@ -57,14 +57,18 @@ def localtree(container, localdir, remotedir, recurse=True):
     dictionary container.
 
     :param dict container: dictionary object to save directory tree
+            {localdir:
+                 [(localdir/sub-directory, 
+                   remotedir/localdir/sub-directory)],}
         {localdir: [(content path, remotedir/content path)],}
     :param str localdir:
         root of local directory to descend, use '.' to start at
         :attr:`.pwd`
     :param str remotedir:
-        root of remote directory to append localdir to create new
+        root of remote directory to append localdir too
         path
-    :param bool recurse: *Default: True* - should it recurse
+    :param bool recurse: *Default: True*. To recurse or not to recurse
+        that is the question
 
     :returns: None
 

@@ -59,11 +59,11 @@ class CnOpts(object):
         try:
             self.hostkeys.load(knownhosts)
         except IOError:
-            # Can't find known_hosts in the standard place
-            raise UserWarning((f'Failed to load host keys from [{knownhosts}]. '
-                               'You will need to explicitly load host keys '
-                               '(cnopts.hostkeys.load(filename)) or disable '
-                               'host key checking (cnopts.hostkeys = None).'))
+            # Can't find known_hosts in the standard location
+            raise UserWarning((f'No file or host key found in [{knownhosts}]. '
+                                'You will need to explicitly load host keys '
+                                '(cnopts.hostkeys.load(filename)) or disable '
+                                'host key checking (cnopts.hostkeys = None).'))
         else:
             if len(self.hostkeys.items()) == 0:
                 raise HostKeysException('No host keys found!')
@@ -163,8 +163,8 @@ class Connection(object):
                         else:
                             raise CredentialException(('Unable to identify '
                                                        'key type from file '
-                                                       'provided, '
-                                                      f'[{private_key_file}]!'))
+                                                       'provided: '
+                                                      f'[{private_key_file}]'))
                     except PermissionError as err:
                         raise err
                     finally:
@@ -1090,24 +1090,29 @@ class Connection(object):
         return link_destination
 
     def remotetree(self, container, remotedir, localdir, recurse=True):
-        '''recursively descend, depth first, the directory tree rooted at
-        remote directory.
+        '''recursively descend remote directory mapping the tree to a
+        dictionary container.
 
         :param dict container: dictionary object to save directory tree
+            {remotedir:
+                 [(remotedir/sub-directory,
+                   localdir/remotedir/sub-directory)],}
         :param str remotedir:
             root of remote directory to descend, use '.' to start at
             :attr:`.pwd`
         :param str localdir:
-            root of local directory to append remotedir to create new path
-        :param bool recurse: *Default: True*. should it recurse
+            root of local directory to append remotedir too
+        :param bool recurse: *Default: True*. To recurse or not to recurse
+            that is the question
 
-        :returns: (dict) remote directory tree
+        :returns: None 
 
         :raises: Exception
 
         '''
         try:
             localdir = Path(localdir).expanduser().as_posix()
+            remotedir = self.normalize(remotedir)
             for attribute in self.listdir_attr(remotedir):
                 if S_ISDIR(attribute.st_mode):
                     remote = Path(remotedir).joinpath(

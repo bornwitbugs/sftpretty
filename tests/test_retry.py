@@ -5,11 +5,14 @@ from unittest import main, TestCase
 class RetryableError(Exception):
     pass
 
+
 class AnotherRetryableError(Exception):
     pass
 
+
 class UnexpectedError(Exception):
     pass
+
 
 class RetryTestCase(TestCase):
 

@@ -19,14 +19,13 @@ def test_remotetree(sftpserver):
 
             dkeys = ['/home/test',
                      '/home/test/pub',
-                     '/home/test/pub/foo2'
-                    ]
+                     '/home/test/pub/foo2']
+
             dvalues = [[('/home/test/pub', '/tmp/home/test/pub')],
                        [('/home/test/pub/foo1', '/tmp/home/test/pub/foo1')],
                        [('/home/test/pub/foo2', '/tmp/home/test/pub/foo2')],
                        [('/home/test/pub/foo2/bar1',
-                         '/tmp/home/test/pub/foo2/bar1')]
-                      ]
+                         '/tmp/home/test/pub/foo2/bar1')]]
 
             assert list(directories.keys()) == dkeys
             assert list(directories.values()) == dvalues
