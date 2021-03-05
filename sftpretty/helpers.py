@@ -58,7 +58,7 @@ def localtree(container, localdir, remotedir, recurse=True):
 
     :param dict container: dictionary object to save directory tree
             {localdir:
-                 [(localdir/sub-directory, 
+                 [(localdir/sub-directory,
                    remotedir/localdir/sub-directory)],}
         {localdir: [(content path, remotedir/content path)],}
     :param str localdir:

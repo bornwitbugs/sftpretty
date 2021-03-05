@@ -2,6 +2,7 @@ from logging import getLogger, StreamHandler
 from sftpretty.helpers import retry
 from unittest import main, TestCase
 
+
 class RetryableError(Exception):
     pass
 

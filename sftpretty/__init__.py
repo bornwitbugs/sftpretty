@@ -61,9 +61,9 @@ class CnOpts(object):
         except IOError:
             # Can't find known_hosts in the standard location
             raise UserWarning((f'No file or host key found in [{knownhosts}]. '
-                                'You will need to explicitly load host keys '
-                                '(cnopts.hostkeys.load(filename)) or disable '
-                                'host key checking (cnopts.hostkeys = None).'))
+                               'You will need to explicitly load host keys '
+                               '(cnopts.hostkeys.load(filename)) or disable '
+                               'host key checking (cnopts.hostkeys = None).'))
         else:
             if len(self.hostkeys.items()) == 0:
                 raise HostKeysException('No host keys found!')
@@ -1105,7 +1105,7 @@ class Connection(object):
         :param bool recurse: *Default: True*. To recurse or not to recurse
             that is the question
 
-        :returns: None 
+        :returns: None
 
         :raises: Exception
 
