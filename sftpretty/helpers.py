@@ -76,17 +76,17 @@ def localtree(container, localdir, remotedir, recurse=True):
 
     '''
     try:
-        localdir = Path(localdir).expanduser().as_posix()
-        for localpath in Path(localdir).iterdir():
+        localdir = Path(localdir).absolute().expanduser()
+        for localpath in localdir.iterdir():
             if localpath.is_dir():
                 local = localpath.as_posix()
                 remote = Path(remotedir).joinpath(
                     localpath.relative_to(
-                        Path(localdir).root).as_posix()).as_posix()
-                if localdir in container.keys():
-                    container[localdir].append((local, remote))
+                        localdir.root).as_posix()).as_posix()
+                if localdir.as_posix() in container.keys():
+                    container[localdir.as_posix()].append((local, remote))
                 else:
-                    container[localdir] = [(local, remote)]
+                    container[localdir.as_posix()] = [(local, remote)]
                 if recurse:
                     localtree(container, local, remotedir,
                               recurse=recurse)

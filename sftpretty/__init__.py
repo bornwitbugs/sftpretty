@@ -423,7 +423,7 @@ class Connection(object):
 
         '''
         directories = {}
-        directories['root'] = [(remotedir,
+        directories['root'] = [(self.normalize(remotedir),
                                 Path(localdir).joinpath(remotedir).as_posix())]
 
         self.remotetree(directories, remotedir, localdir, recurse=True)
