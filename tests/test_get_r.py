@@ -14,7 +14,7 @@ def test_get_r(sftpserver):
             sftp.get_r('.', localpath)
 
             checks = [
-                      ([''], ['pub', 'read.me']),
+                      ([''], ['home', 'read.me']),
                       (['', 'pub'], ['foo1', 'foo2', 'make.txt']),
                       (['', 'pub', 'foo1'], ['foo1.txt', 'image01.jpg']),
                       (['', 'pub', 'foo2'], ['bar1', 'foo2.txt']),
@@ -38,7 +38,7 @@ def test_get_r_pwd(sftpserver):
             sftp.get_r('pub/foo2', localpath)
 
             checks = [
-                      (['', ], ['pub', ]),
+                      (['', ], ['home', 'pub']),
                       (['', 'pub', ], ['foo2', ]),
                       (['', 'pub', 'foo2'], ['bar1', 'foo2.txt']),
                       (['', 'pub', 'foo2', 'bar1'], ['bar1.txt', ]),
@@ -84,7 +84,7 @@ def test_get_r_cdd(sftpserver):
             sftp.get_r('.', localpath)
 
             checks = [
-                      (['', ], ['bar1', 'foo2.txt']),
+                      (['', ], ['foo2.txt', 'home']),
                       (['bar1', ], ['bar1.txt', ]),
                      ]
 
